@@ -9,9 +9,9 @@
 
 #### Different from html2canvas
 
-1.fix: background images should not be blurry in export.
-2.feat: Use dynamic background-repeat for background-image rendering.
-3.feat: Add support for CSS 'object-fit' property.
+-   fix: background images should not be blurry in export.
+-   feat: Use dynamic background-repeat for background-image rendering.
+-   feat: Add support for CSS 'object-fit' property.
 
 #### JavaScript HTML renderer
 
