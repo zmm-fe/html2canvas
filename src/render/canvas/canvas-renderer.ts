@@ -6,6 +6,7 @@ import {CSSParsedDeclaration} from '../../css';
 import {TextContainer} from '../../dom/text-container';
 import {Path, transformPath} from '../path';
 import {BACKGROUND_CLIP} from '../../css/property-descriptors/background-clip';
+import {backgroundRepeatValues} from '../../css/property-descriptors/background-repeat';
 import {BoundCurves, calculateBorderBoxPath, calculateContentBoxPath, calculatePaddingBoxPath} from '../bound-curves';
 import {BezierCurve, isBezierCurve} from '../bezier-curve';
 import {Vector} from '../vector';
@@ -44,6 +45,7 @@ import {PAINT_ORDER_LAYER} from '../../css/property-descriptors/paint-order';
 import {Renderer} from '../renderer';
 import {Context} from '../../core/context';
 import {DIRECTION} from '../../css/property-descriptors/direction';
+import {calculateObjectFitBounds} from '../object-fit';
 
 export type RenderConfigurations = RenderOptions & {
     backgroundColor: Color | null;
@@ -81,6 +83,8 @@ export class CanvasRenderer extends Renderer {
         this.ctx.translate(-options.x, -options.y);
         this.ctx.textBaseline = 'bottom';
         this._activeEffects = [];
+        console.log(this.ctx);
+        
         this.context.logger.debug(
             `Canvas renderer initialized (${options.width}x${options.height}) with scale ${options.scale}`
         );
@@ -274,18 +278,25 @@ export class CanvasRenderer extends Renderer {
             const box = contentBox(container);
             const path = calculatePaddingBoxPath(curves);
             this.path(path);
+            const {src, dest} = calculateObjectFitBounds(
+                container.styles.objectFit,
+                container.intrinsicWidth,
+                container.intrinsicHeight,
+                box.width,
+                box.height
+            );
             this.ctx.save();
             this.ctx.clip();
             this.ctx.drawImage(
                 image,
-                0,
-                0,
-                container.intrinsicWidth,
-                container.intrinsicHeight,
-                box.left,
-                box.top,
-                box.width,
-                box.height
+                src.left,
+                src.top,
+                src.width,
+                src.height,
+                box.left + dest.left,
+                box.top + dest.top,
+                dest.width,
+                dest.height
             );
             this.ctx.restore();
         }
@@ -579,6 +590,7 @@ export class CanvasRenderer extends Renderer {
         canvas.height = Math.max(1, height);
         const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
         ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height);
+        // document.body.appendChild(canvas);
         return canvas;
     }
 
@@ -600,11 +612,29 @@ export class CanvasRenderer extends Renderer {
                         image.height,
                         image.width / image.height
                     ]);
+                    // const pattern = this.ctx.createPattern(
+                    //     this.resizeImage(image, width, height),
+                    //     backgroundRepeatValues[+container.styles.backgroundRepeat || 0]
+                    // ) as CanvasPattern;
+                    // this.renderRepeat(path, pattern, x, y);
+                    // fix: background images should not be blurry in export
+                    const scaleX = width / image.naturalWidth;
+                    const scaleY = height / image.naturalHeight;
                     const pattern = this.ctx.createPattern(
-                        this.resizeImage(image, width, height),
-                        'repeat'
+                        image,
+                        backgroundRepeatValues[+container.styles.backgroundRepeat || 0]
                     ) as CanvasPattern;
-                    this.renderRepeat(path, pattern, x, y);
+                    const scaledPath = (path as Vector[]).map((item) => {
+                        item.x = item.x / scaleX;
+                        item.y = item.y / scaleY;
+                        return item;
+                    });
+                    const scaledOffsetX = x / scaleX;
+                    const scaledOffsetY = y / scaleY;
+                    this.ctx.save();
+                    this.ctx.scale(scaleX, scaleY);
+                    this.renderRepeat(scaledPath, pattern, scaledOffsetX, scaledOffsetY);
+                    this.ctx.restore();
                 }
             } else if (isLinearGradient(backgroundImage)) {
                 const [path, x, y, width, height] = calculateBackgroundRendering(container, index, [null, null, null]);
@@ -623,7 +653,10 @@ export class CanvasRenderer extends Renderer {
                 ctx.fillStyle = gradient;
                 ctx.fillRect(0, 0, width, height);
                 if (width > 0 && height > 0) {
-                    const pattern = this.ctx.createPattern(canvas, 'repeat') as CanvasPattern;
+                    const pattern = this.ctx.createPattern(
+                        canvas,
+                        backgroundRepeatValues[+container.styles.backgroundRepeat || 0]
+                    ) as CanvasPattern;
                     this.renderRepeat(path, pattern, x, y);
                 }
             } else if (isRadialGradient(backgroundImage)) {

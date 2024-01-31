@@ -9,6 +9,7 @@ export const enum BACKGROUND_REPEAT {
     REPEAT_X = 2,
     REPEAT_Y = 3
 }
+export const backgroundRepeatValues = ['repeat', 'no-repeat', 'repeat-x', 'repeat-y']
 
 export const backgroundRepeat: IPropertyListDescriptor<BackgroundRepeat> = {
     name: 'background-repeat',

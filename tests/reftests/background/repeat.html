@@ -1,57 +1,90 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Background attribute tests</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script type="text/javascript" src="../../test.js"></script>
-        <style>
-            html {
-                background-color: red;
-            }
-            body {
-                background-color: lime;
-            }
-            .small div{
-                width:100px;
-                height:100px;
-                float:left;
-                margin:10px;
-                border:1px solid #000;
-            }
 
-            .medium div{
-                width:200px;
-                height:200px;
-                float:left;
-                margin:10px;
-                border:1px solid #000;
-            }
+<head>
+    <title>Background attribute tests</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="../../test.js"></script>
+    <style>
+        html {
+            background-color: red;
+        }
 
-            .small, .medium{
-                clear:both;
-            }
+        body {
+            background-color: lime;
+        }
 
-            div{
-                display:block;
-            }
+        .small div {
+            width: 100px;
+            height: 100px;
+            float: left;
+            margin: 10px;
+            border: 1px solid #000;
+        }
 
-        </style>
+        .medium div {
+            width: 200px;
+            height: 200px;
+            float: left;
+            margin: 10px;
+            border: 1px solid #000;
+        }
 
-    </head>
-    <body>
+        .small,
+        .medium {
+            clear: both;
+        }
 
-        <div class="medium">
-            <div style="background:url(../../assets/image.jpg);"></div>
-            <div style="background:url(../../assets/image.jpg) repeat-x;"></div>
-            <div style="background:url(../../assets/image.jpg) repeat-y;"></div>
-            <div style="background:url(../../assets/image.jpg) no-repeat;"></div>
+        div {
+            display: block;
+        }
+
+        .shared-area {
+            text-align: center;
+            border: solid .5em #0d47a1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            background-color: white;
+        }
+
+        .edges {
+            width: 80%;
+            height: 50%;
+            background-size: contain;
+            background-position: center center;
+            background-image: url('../../assets/edges.png');
+            background-color: white;
+            background-repeat: no-repeat;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="medium">
+        <div style="background:url(../../assets/image.jpg);"></div>
+        <div style="background:url(../../assets/image.jpg) repeat-x;"></div>
+        <div style="background:url(../../assets/image.jpg) repeat-y;"></div>
+        <div style="background:url(../../assets/image.jpg) no-repeat;"></div>
+        <div class="shared-area">
+            <p class="edges"></p>
+            <p class="caption">Edges</p>
         </div>
-        <div class="small">
-            <div style="background:url(../../assets/image.jpg);"></div>
-            <div style="background:url(../../assets/image.jpg) repeat-x;"></div>
-            <div style="background:url(../../assets/image.jpg) repeat-y;"></div>
-            <div style="background:url(../../assets/image.jpg) no-repeat;"></div>
+    </div>
+    <div class="small">
+        <div style="background:url(../../assets/image.jpg);"></div>
+        <div style="background:url(../../assets/image.jpg) repeat-x;"></div>
+        <div style="background:url(../../assets/image.jpg) repeat-y;"></div>
+        <div style="background:url(../../assets/image.jpg) no-repeat;"></div>
+        <div class="shared-area">
+            <p class="edges"></p>
+            <p class="caption">Edges</p>
         </div>
+    </div>
 
-    </body>
+</body>
+
 </html>
