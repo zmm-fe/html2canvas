@@ -11,11 +11,12 @@ const banner = `/*!
  * Copyright (c) ${(new Date()).getFullYear()} ${pkg.author.name} <${pkg.author.url}>
  * Released under ${pkg.license} License
  */`;
+const pgkName = 'html2canvas';
 
 export default {
     input: `src/index.ts`,
     output: [
-        { file: pkg.main, name: pkg.name, format: 'umd', banner, sourcemap: true },
+        { file: pkg.main, name: pgkName, format: 'umd', banner, sourcemap: true },
         { file: pkg.module, format: 'esm', banner, sourcemap: true },
     ],
     external: [],
