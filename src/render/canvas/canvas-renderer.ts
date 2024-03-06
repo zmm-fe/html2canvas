@@ -225,9 +225,9 @@ export class CanvasRenderer extends Renderer {
                                         // need to take that into account both in position and size
                                         this.ctx.fillRect(
                                             text.bounds.left,
-                                            Math.round(text.bounds.top + baseline),
+                                            Math.round(text.bounds.top + text.bounds.height),
                                             text.bounds.width,
-                                            1
+                                            (styles.fontSize?.number ?? 0) / 10
                                         );
 
                                         break;
