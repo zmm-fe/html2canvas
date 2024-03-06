@@ -2,7 +2,7 @@
  * @Author: liuyuanhao
  * @Date: 2024-03-06 10:13:27
  * @LastEditors: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime: 2024-03-06 10:45:50
+ * @LastEditTime: 2024-03-06 10:48:06
  * @FilePath: /html2canvas/src/css/property-descriptors/text-decoration-thickness.ts
  * @Description: support text-decoration-thickness
  */
@@ -15,7 +15,6 @@ export const textDecorationThickness: IPropertyValueDescriptor<number> = {
     type: PropertyDescriptorParsingType.VALUE,
     prefix: false,
     parse: (_context: Context, token: CSSValue): number => {
-        console.log(token, 'token--------------------------->');
         if (isDimensionToken(token)) {
             return token.number;
         }
