@@ -227,7 +227,7 @@ export class CanvasRenderer extends Renderer {
                                             text.bounds.left,
                                             Math.round(text.bounds.top + text.bounds.height),
                                             text.bounds.width,
-                                            (styles.fontSize?.number ?? 0) / 10
+                                            styles.textDecorationThickness ?? ((styles.fontSize?.number ?? 0) / 10)
                                         );
 
                                         break;
