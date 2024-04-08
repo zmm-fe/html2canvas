@@ -12,6 +12,7 @@
 -   fix: background images should not be blurry in export.
 -   feat: Use dynamic background-repeat for background-image rendering.
 -   feat: Add support for CSS 'object-fit' property.
+-   feat: Add support for CSS 'text-decoration-thickness' property.
 
 #### JavaScript HTML renderer
 

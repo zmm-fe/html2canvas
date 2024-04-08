@@ -221,11 +221,7 @@ export class CSSParsedDeclaration {
             textDecorationLine,
             declaration.textDecorationLine ?? declaration.textDecoration
         );
-        this.textDecorationThickness = parse(
-            context,
-            textDecorationThickness,
-            declaration.textDecorationThickness
-        );
+        this.textDecorationThickness = parse(context, textDecorationThickness, declaration.textDecorationThickness);
         this.textShadow = parse(context, textShadow, declaration.textShadow);
         this.textTransform = parse(context, textTransform, declaration.textTransform);
         this.transform = parse(context, transform, declaration.transform);
